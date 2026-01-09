@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Tag } from 'lucide-react';
-import axios from 'axios';
+import api from '../api';
 import { useAuth } from '../context/AuthContext';
 
 const Contact = () => {
@@ -25,7 +25,7 @@ const Contact = () => {
         if (!formData.couponCode) return;
         try {
             const clientType = user?.clientType || 'individual';
-            const res = await axios.post('http://localhost:5000/api/coupons/validate', {
+            const res = await api.post('/api/coupons/validate', {
                 code: formData.couponCode,
                 clientType
             });
@@ -39,8 +39,7 @@ const Contact = () => {
         e.preventDefault();
         setStatus('loading');
         try {
-            const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/contact';
-            await axios.post(API_URL, { ...formData, discountApplied: couponStatus.discount });
+            await api.post('/api/contact', { ...formData, discountApplied: couponStatus.discount });
             setStatus('success');
             setFormData({ name: '', email: '', company: '', requirement: '', budget: '', couponCode: '' });
             setCouponStatus({ valid: false, msg: '', discount: 0 });
