@@ -10,12 +10,12 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         if (token) {
-            axios.defaults.headers.common['x-auth-token'] = token;
+            api.defaults.headers.common['x-auth-token'] = token;
             localStorage.setItem('token', token);
             // Ideally verify token with backend here, for now decoding or persisting
             // Simplified: Just keep user logged in if token exists
         } else {
-            delete axios.defaults.headers.common['x-auth-token'];
+            delete api.defaults.headers.common['x-auth-token'];
             localStorage.removeItem('token');
         }
         setLoading(false);
